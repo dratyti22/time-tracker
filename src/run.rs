@@ -1,4 +1,4 @@
-use crate::commands::{handler_add, handler_complete_task, handler_delete_task, Cli};
+use crate::commands::{handle_get, handler_add, handler_complete_task, handler_delete_task, handler_get_all_tasks, Cli};
 use crate::db::{create_bd, create_bd_tasks, DB_URL};
 use anyhow::Result;
 use sqlx::sqlite::SqlitePool;
@@ -17,9 +17,9 @@ pub async fn run(cli: Cli) -> Result<()> {
     } else if let Some(id) = cli.get_complete() {
         handler_complete_task(&pool, id).await?;
     } else if cli.get_list() {
-        println!("Listing all tasks");
-    } else if let Some(id) = cli.get_status() {
-        println!("Setting status for task with ID: {}", id);
+        handler_get_all_tasks(&pool).await?;
+    } else if let Some(id) = cli.get_get() {
+        handle_get(&pool,id).await?;
     } else {
         println!("No valid command provided. Use --help for more information.");
     }

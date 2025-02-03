@@ -11,8 +11,8 @@ pub struct Cli {
     complete: Option<i64>,
     #[arg(short, long, help = "List all tasks")]
     list: bool,
-    #[arg(short, long, help = "Set the status of a task by ID")]
-    status: Option<u16>,
+    #[arg(short, long, help = "Get a specific task by ID")]
+    get: Option<u16>,
 }
 
 impl Cli {
@@ -32,7 +32,7 @@ impl Cli {
         self.list
     }
 
-    pub fn get_status(&self) -> Option<u16> {
-        self.status
+    pub fn get_get(&self) -> Option<u16> {
+        self.get
     }
 }

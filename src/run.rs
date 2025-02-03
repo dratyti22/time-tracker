@@ -1,4 +1,4 @@
-use crate::commands::{handler_add, handler_complete_task, Cli};
+use crate::commands::{handler_add, handler_complete_task, handler_delete_task, Cli};
 use crate::db::{create_bd, create_bd_tasks, DB_URL};
 use anyhow::Result;
 use sqlx::sqlite::SqlitePool;
@@ -13,7 +13,7 @@ pub async fn run(cli: Cli) -> Result<()> {
             handler_add(&pool, task_name).await?;
         }
     } else if let Some(id) = cli.get_delete() {
-        println!("Deleting task with ID: {}", id);
+        handler_delete_task(&pool, id).await?;
     } else if let Some(id) = cli.get_complete() {
         handler_complete_task(&pool, id).await?;
     } else if cli.get_list() {

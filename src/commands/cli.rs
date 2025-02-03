@@ -8,7 +8,7 @@ pub struct Cli {
     #[arg(short, long, help = "Delete a task by ID")]
     delete: Option<u16>,
     #[arg(short, long, help = "Mark a task as completed by ID")]
-    complete: Option<u16>,
+    complete: Option<i64>,
     #[arg(short, long, help = "List all tasks")]
     list: bool,
     #[arg(short, long, help = "Set the status of a task by ID")]
@@ -24,7 +24,7 @@ impl Cli {
         self.delete
     }
 
-    pub fn get_complete(&self) -> Option<u16> {
+    pub fn get_complete(&self) -> Option<i64> {
         self.complete
     }
 

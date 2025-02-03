@@ -3,7 +3,7 @@ use sqlx::{Sqlite, SqlitePool};
 
 mod models;
 mod tasks;
-pub use tasks::create_task_db;
+pub use tasks::{create_task_db, complete_task_db};
 
 pub async fn create_bd_tasks(pool: &SqlitePool) -> anyhow::Result<()> {
     sqlx::query(

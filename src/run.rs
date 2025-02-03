@@ -1,41 +1,16 @@
-use crate::commands::Cli;
+use crate::commands::{handler_add, Cli};
+use crate::db::{create_bd, create_bd_tasks, DB_URL};
 use anyhow::Result;
-use sqlx::migrate::MigrateDatabase;
 use sqlx::sqlite::SqlitePool;
-use sqlx::Sqlite;
-
-async fn create_bd_tasks(pool: &SqlitePool) -> Result<()> {
-    sqlx::query(
-        "CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            start_time TEXT NOT NULL,
-            end_time TEXT
-        )",
-    )
-    .execute(pool)
-    .await?;
-    Ok(())
-}
-pub const DB_URL: &str = "sqlite://time_tracker.db";
-async fn create_bd()->Result<()>{
-    if !Sqlite::database_exists(DB_URL).await.unwrap_or(false) {
-        println!("Creating database {}", DB_URL);
-        Sqlite::create_database(DB_URL).await?;
-        println!("Database created successfully");
-    } else {
-        println!("Database already exists");
-    }
-    Ok(())
-}
 
 pub async fn run(cli: Cli) -> Result<()> {
     create_bd().await?;
     let pool = SqlitePool::connect(DB_URL).await?;
     create_bd_tasks(&pool).await?;
+
     if let Some(task_name) = cli.get_add() {
         if !task_name.is_empty() {
-            println!("Adding task: {:?}", cli.get_add());
+            handler_add(&pool, task_name).await?;
         }
     } else if let Some(id) = cli.get_delete() {
         println!("Deleting task with ID: {}", id);

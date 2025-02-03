@@ -9,3 +9,4 @@ anyhow = "1.0.95"
 clap = { version = "4.5.27", features = ["derive"] }
 tokio = { version = "1.43.0", features = ["full"] }
 sqlx = { version = "0.8.3", features = ["sqlite", "runtime-tokio"] }
+chrono = "0.4.39"
